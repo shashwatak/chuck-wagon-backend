@@ -1,11 +1,12 @@
 [
 
-{
-
 {% for truck in trucks %}
-    { name : {{ truck.name }} }
-{% endfor %}
+    {
+      "name" : "{{ truck.name }}",
+      "latitude" : "{{ truck.latitude }}",
+      "longitude" : "{{ truck.longitude }}",
 
-},
+    },
+{% endfor %}
 
 ]
