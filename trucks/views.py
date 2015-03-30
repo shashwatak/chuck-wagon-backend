@@ -8,11 +8,7 @@ def index(request):
     return HttpResponse('Hello from Python!')
 
 
-def db(request):
-
-    # truck = Truck()
-    # truck.save()
-
+def trucks(request):
     trucks = Truck.objects.all()
 
-    return render(request, 'db.html', {'trucks': trucks})
+    return render(request, 'trucks.html', {'trucks': trucks})

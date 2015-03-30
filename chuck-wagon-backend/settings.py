@@ -55,17 +55,6 @@ ROOT_URLCONF = 'chuck-wagon-backend.urls'
 
 WSGI_APPLICATION = 'chuck-wagon-backend.wsgi.application'
 
-
-# Database
-# https://docs.djangoproject.com/en/1.6/ref/settings/#databases
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
-}
-
 # Internationalization
 # https://docs.djangoproject.com/en/1.6/topics/i18n/
 
@@ -87,7 +76,8 @@ STATIC_URL = '/static/'
 
 
 # Parse database configuration from $DATABASE_URL
-DATABASES['default'] =  dj_database_url.config()
+DATABASES = {}
+DATABASES['default'] =  dj_database_url.config(default=os.environ.get('DATABASE_URL'))
 
 # Honor the 'X-Forwarded-Proto' header for request.is_secure()
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
