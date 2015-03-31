@@ -29,3 +29,14 @@ class NearbyViewTestCase(TestCase):
         c = Client()
         response = c.get('/trucks/0.0/0.0')
         self.assertEqual(response.status_code, 200)
+
+
+class WithinFeetViewTestCase(TestCase):
+    def setUp(self):
+        Truck.objects.create(id=0, name="truckA", latitude=0.0, longitude=0.0)
+        Truck.objects.create(id=1, name="truckB", latitude=0.1, longitude=0.1)
+
+    def test_view_response(self):
+        c = Client()
+        response = c.get('trucks/within/20000/of/0/0/')
+        self.assertEqual(response.status_code, 200)

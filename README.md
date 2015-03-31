@@ -1,13 +1,13 @@
 # chuck-wagon-backend
 
+Hosted here: [Chuck Wagon](http://www.chuck-wagon.us)
+
 ## Design Goals
 
-This app will serve Food Truck information (as JSON) on REST Endpoints. All the Food Truck data is, obtained from [Data SF](https://data.sfgov.org/Economy-and-Community/Mobile-Food-Facility-Permit/rqzj-sfat?)
+This app will serve Food Truck information (as JSON) on REST Endpoints. All the Food Truck data is obtained from [Data SF](https://data.sfgov.org/Economy-and-Community/Mobile-Food-Facility-Permit/rqzj-sfat?).
 
 For the purpose of learning, I chose to re-host and serve all the data from Data SF myself.
-In other words, I copy all the data from Data SF and load it into my own DB. Then I serve the data on the below REST endpoints, without making calls to Data SF.
-
-Thus, I have properly implemented a stand-alone REST backend.
+In other words, I copy all the data from Data SF and load it into my own DB. Then I serve the data on the below REST endpoints myself.
 
 ## REST Endpoints
 
@@ -15,7 +15,11 @@ Thus, I have properly implemented a stand-alone REST backend.
 Returns full list of Food Trucks as JSON
 
     GET '/trucks/near/<lat>/<long>'
-Returns list of Food Trucks around 1 sq mile from specified lat-long, as JSON
+Returns list of Food Trucks approximately ~.4 sq miles from specified lat-long, as JSON
+
+    GET '/trucks/within/<feet>/of/<lat>/<long>'
+Returns list of food trucks approximately within feet of lat-long, as JSON
+
 
 JSON responses are in the form of:
 `json
@@ -34,11 +38,25 @@ JSON responses are in the form of:
     ]
 `
 
-## Design Overview
-Going into the project, my biggest concern was hosting and actually serving the data. I chose Heroku for hosting, because it is very simple to set up and the documentation is solid. This was the main driver of many of my subsequent framework/library decisions: does it pair well with Heroku.
+## TODO
+
+- Include REST Endpoints to POST new Truck information
+- Include a frontend to navigate and browse the data
+
+## Design Overview (Why Django?)
+
+Going into the project, my biggest concern was hosting and actually serving the data. I chose Heroku for hosting, because it is very simple to set up and the documentation is solid. Django and Heroku work well together, and plenty of documentation exists to get started.
 
 Django (with Postgres) provides the backend, exposing the trucks through rendered JSON. Apps can GET from the endpoints and receive the locations and names of trucks. I chose Django because I have some familiarity with Python, and the Heroku sample app was quite helpful. Django also provides Testing out of the box, so there is no need to integrate a seperate testing framework.
 
+
+### Django vs Node
+
+The advantage of Node.js is that it's extremely lightweight and easy to get started. You can get up and running in seconds.
+
+Django takes a good amount of fiddling, with server  and databse configs, but once it's running, it become smoother sailing. Being able to refer to the data as instances of a Model class is very pleasant (as opposed to dealing with raw JSON everywhere).
+
+It's possible to set up a Model-View-Whatever with Node.js, but then you have to start bringing in more frameworks and libraries. Django comes with the whole package, including tests.
 
 ## Files of interest
 
@@ -50,8 +68,16 @@ Django (with Postgres) provides the backend, exposing the trucks through rendere
 
 `trucks/views.py` Views are usuall used with Templates to generate HTML responses, but we generate pure JSON for our Clients.
 
+`trucks/templates/hello.html` A simple welcome page that tells you how to use the REST API.
+
 `trucks/templates/trucks.html` The JSON Schema we will return to the Client, will be filled in with data when a Client requests it.
 
+`trucks/tests.py` A suite of tests to verify the functionality of the DB, Models, and Views.
+
+
+## Other Projects by me
+[satellite-js](https://github.com/shashwatak/satellite-js)
+[EarthStation](https://github.com/shashwatak/EarthStation)
 
 ## 'Getting Started with Python on Heroku'
 
